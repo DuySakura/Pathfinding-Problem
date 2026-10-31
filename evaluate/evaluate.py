@@ -13,7 +13,6 @@ MEMORY_LIMIT_MB = 8 * 1024
 EXCUTABLES = {
 
 }
-
 logging.basicConfig(
     level = logging.INFO,
     format = '%(levelname)s - %(message)s',
