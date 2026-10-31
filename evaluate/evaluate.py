@@ -67,10 +67,15 @@ def run_test_case(test_file: Path, excutable_path: Path, dataset_name: str):
                 if process.returncode == 0:
                     output = process.stdout.strip()
                     alg_value = float(output)
-                    gap = (alg_value - optimal_value) / optimal_value * 100
-                    gaps.append(gap)
 
-                    logging.info(f"AC | Gap: {gap:.2f}% | Time: {elapsed_time}s")
+                    if alg_value == -1:
+                        logging.info("No solution")
+
+                    else:
+                        gap = (alg_value - optimal_value) / optimal_value * 100
+                        gaps.append(gap)
+
+                        logging.info(f"AC | Gap: {gap:.2f}% | Time: {elapsed_time}s")
 
                 else:
                     logging.warning("RE / MLE")
