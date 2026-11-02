@@ -1,43 +1,29 @@
+from .dls import _dls_search, is_valid
 
-from .dls import dls, is_valid
 
-
-def ids(maze, start, goal, max_depth=20):
-    """
-    Iterative Deepening Search
-
-    maze: Ban do me cung
-    start: Toa do bat dau (x, y)
-    goal: Toa do dich (x, y)
-    max_depth: Gioi han do sau toi da
-
-    Return:
-        path, cost, total_expanded
-    """
-
-    if max_depth < 0:
-        raise ValueError("max_depth phai >= 0")
-
+def ids(maze, start, goal):
     if not is_valid(maze, *start):
-        return None, None, 0
+        return -1, -1, 0
 
     if not is_valid(maze, *goal):
-        return None, None, 0
+        return -1, -1, 0
 
     total_expanded = 0
 
-    # Tang gioi han do sau tu 0 den max_depth
-    for limit in range(max_depth + 1):
+    # So o co the di chuyen
+    max_depth = int((maze == 0).sum()) - 1
 
-        path, cost, expanded = dls(
+    for limit in range(max_depth + 1):
+        status, path, cost, expanded = _dls_search(
             maze, start, goal, limit
         )
 
         total_expanded += expanded
 
-        # Neu tim thay duong di
-        if path is not None:
+        if status == "FOUND":
             return path, cost, total_expanded
 
-    # Khong tim thay duong di
-    return None, None, total_expanded
+        if status == "FAILURE":
+            return -1, -1, total_expanded
+
+    return -1, -1, total_expanded
